@@ -5,7 +5,7 @@ set(PICO_PLATFORM rp2040)
 
 include(pico_sdk_import.cmake)
 
-project(133-led-button-usb)
+project(133_led_button_usb)
 
 pico_sdk_init()
 
