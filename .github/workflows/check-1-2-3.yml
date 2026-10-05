@@ -1,7 +1,7 @@
 name: 1.2.3 Программное избавление от дребезга
 
 on:
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:
