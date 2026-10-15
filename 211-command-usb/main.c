@@ -6,6 +6,7 @@
 #include "led.h"
 #include "log.h"
 #include "device.h"
+#include "memory.h
 
 const uint BUTTON_PIN = 15;
 const uint DEBOUNCE_MS = 20;
@@ -50,6 +51,11 @@ void cmd_version(void)
 void cmd_ping(void)
 {
     printf("pong\n");
+}
+
+void cmd_mem_info(void)
+{
+    mem_info();
 }
 
 struct command_t
