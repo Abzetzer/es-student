@@ -3,9 +3,9 @@
 устройство: 2e8a:000a
 серийный номер: E663589863531A2C
 порт: COM3
-начало: 2026-10-16T00:27:01
-   0.001 --> mem_info
-   0.166 <-- mem_info
-   0.167 <-- dbg read_line:105 got mem_info
-   0.168 <-- err handle_command:86 unknown command: mem_info
+начало: 2026-10-16T00:37:36
+   0.000 --> mem_info
+   0.177 <-- mem_info
+   0.178 <-- dbg read_line:111 got mem_info
+   0.179 <-- err handle_command:92 unknown command: mem_info
 итог: отправлено команд 1, принято строк 3
