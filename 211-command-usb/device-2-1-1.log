@@ -1,0 +1,28 @@
+задание: 2.1.1
+проект: 211-command-usb
+устройство: 2e8a:000a
+серийный номер: E663589863531A2C
+порт: COM3
+начало: 2026-10-15T21:37:48
+   0.000 --> enable
+   0.125 <-- enable
+   0.126 <-- dbg read_line:67 got enable
+   0.126 <-- inf handle_command:30 led on
+   2.180 --> disable
+   2.326 <-- disable
+   2.327 <-- dbg read_line:67 got disable
+   2.327 <-- inf handle_command:35 led off
+   4.366 --> info
+   4.447 <-- info
+   4.448 <-- dbg read_line:67 got info
+   4.448 <-- project: 211-command-usb
+   4.448 <-- repo: https://github.com/Abzetzer/es-student
+   4.449 <-- board: pico
+   4.449 <-- serial: E663589863531A2C
+   4.450 <-- chip: manufacturer 0x927, part 0x0002, revision 2
+   4.450 <-- pico-sdk: 2.3.0
+   6.489 --> nosuchcommand
+   6.768 <-- nosuchcommand
+   6.769 <-- dbg read_line:67 got nosuchcommand
+   6.770 <-- err handle_command:47 unknown command: nosuchcommand
+итог: отправлено команд 4, принято строк 17
