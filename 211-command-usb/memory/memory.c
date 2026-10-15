@@ -56,15 +56,15 @@ void mem_info(void)
     uintptr_t rom_start   = ROM_BASE;
     uintptr_t rom_end     = ROM_BASE + ROM_SIZE;
 
-    uintptr_t data_flash_start = (uintptr_t)&__etext;
-
     uintptr_t dat_sz  = (uintptr_t)&__data_end__ - (uintptr_t)&__data_start__;
-    uintptr_t data_flash_end = data_flash_start + dat_sz;
     uintptr_t b2_sz = (uintptr_t)&__boot2_end__ - (uintptr_t)&__boot2_start__;
     uintptr_t txt_sz = (uintptr_t)&__etext - (uintptr_t)&__boot2_end__;
     uintptr_t bss_sz = (uintptr_t)&__bss_end__ - (uintptr_t)&__bss_start__;
     uintptr_t heap_sz = (uintptr_t)&__HeapLimit - (uintptr_t)&__bss_end__;
     uintptr_t stk_sz = (uintptr_t)&__StackTop - (uintptr_t)&__StackBottom;
+
+    uintptr_t data_flash_start = (uintptr_t)&__etext;
+    uintptr_t data_flash_end = data_flash_start + dat_sz;
 
     row("flash", flash_start, flash_end);
     row("sram", sram_start, sram_end);
