@@ -6,7 +6,7 @@
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sysinfo.h"
 
-struct info_t device_card = {2, 0x00010000, "es-cmd-usb"};
+struct info_t device_card = {0x00010000, "es-cmd-usb", 2};
 
 
 void device_info(void)
@@ -34,12 +34,7 @@ void dev_info(void)
     printf("device_card     0x%08x %5u\n",
            &device_card,
            sizeof(device_card));
-    printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
-           "revision",
-           &device_card.revision,
-           sizeof(device_card.revision),
-           offsetof(struct info_t, revision),
-           device_card.revision);
+
     printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
         "version",
         &device_card.version,
@@ -52,6 +47,12 @@ void dev_info(void)
         sizeof(device_card.name),
         offsetof(struct info_t, name),
         device_card.name);
+    printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
+        "revision",
+        &device_card.revision,
+        sizeof(device_card.revision),
+        offsetof(struct info_t, revision),
+        device_card.revision);
 
         unsigned fields = sizeof(device_card.version) + sizeof(device_card.name) + sizeof(device_card.revision);
         printf("fields %u, sizeof %u, padding %u", fields, sizeof(struct info_t), sizeof(struct info_t)-fields);

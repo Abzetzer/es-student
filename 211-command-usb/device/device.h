@@ -16,9 +16,9 @@ void dev_info(void);
 
 struct info_t
 {
-    uint8_t revision;
     uint32_t version;
     char name[13];
+    uint8_t revision;
 };
 
 extern struct info_t device_card;
