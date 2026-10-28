@@ -180,7 +180,7 @@ void boot_info(void)
     //   led bit      — разряд из регистра
        printf("  led bit      %u\n", level);
     //   gpio_get     — то же значение через SDK
-       printf("  gpio get     %u\n", gpio_get(led_pin()));
+       printf("  gpio_get     %u\n", gpio_get(led_pin()));
 
     /*vector table   0x10000100
   stack top    0x20042000
