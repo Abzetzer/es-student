@@ -7,7 +7,7 @@ build="$project/build"
 
 [ -f "$project/CMakeLists.txt" ] || { echo "no CMakeLists.txt in $project" >&2; exit 1; }
 
-cmake -S "$project" -B "$build"
+cmake -G "Unix Makefiles" -S "$project" -B "$build"   # <-- вернули генератор
 cmake --build "$build"
 
 uf2=$(find "$build" -maxdepth 1 -name '*.uf2' -print -quit)

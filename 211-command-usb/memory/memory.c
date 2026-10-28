@@ -6,6 +6,7 @@
 #include "command.h"
 #include "device.h"
 #include "memory.h"
+#include "led.h"
 
 extern char __flash_binary_start;
 extern char __flash_binary_end;
@@ -150,4 +151,42 @@ void fw_info(void)
     // возвращаем блок кучи
        free(heap_variable);
 
+}
+
+#define VECTOR_TABLE 0x10000100
+
+void boot_info(void)
+{
+       // указатель на таблицу векторов и два первых слова из неё
+       const uint32_t *vectors = (const uint32_t *)VECTOR_TABLE;
+
+       uint32_t stack_top = vectors[0];
+       uint32_t reset_handler = vectors[1];
+    // указатель на регистр GPIO_IN и разряд вывода светодиода
+
+    // vector table   — адрес таблицы
+       printf("  vector table   0x%08x\n",(uint32_t)VECTOR_TABLE);
+    //   stack top    — первое слово
+       printf("  stack top    0x%08x\n", stack_top);
+    //   reset        — второе слово
+       printf("  reset        0x%08x\n", reset_handler);
+    //   reset (even) — оно же со сброшенным признаком Thumb
+       printf("  reset(even) 0x%08x\n", (reset_handler & ~1u));
+    // gpio in        — адрес регистра
+       volatile uint32_t *gpio_in = (uint32_t*)0xd0000004;
+       uint32_t level = (*gpio_in >> led_pin()) & 1u;
+
+       printf("gpio in        0x%08x\n", (uintptr_t)gpio_in);
+    //   led bit      — разряд из регистра
+       printf("  led bit      %u\n", level);
+    //   gpio_get     — то же значение через SDK
+       printf("  gpio get     %u\n", gpio_get(led_pin()));
+
+    /*vector table   0x10000100
+  stack top    0x20042000
+  reset        0x100001f7
+  reset (even) 0x100001f6
+gpio in        0xd0000004
+  led bit      0
+  gpio_get     0*/
 }

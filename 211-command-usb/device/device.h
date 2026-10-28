@@ -13,6 +13,7 @@
 
 void device_info(void);
 void dev_info(void);
+void boot_info(void);
 
 struct info_t
 {
