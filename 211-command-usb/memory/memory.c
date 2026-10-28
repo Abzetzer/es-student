@@ -128,13 +128,13 @@ void fw_info(void)
        }
 
     // обработчики    — имя команды и адрес обработчика, строкой на команду
-       printf("%-13s 0x%08x %s\n", (uintptr_t)DEVICE_PROJECT, DEVICE_PROJECT);
+       printf("DEVICE_PROJECT  0x%08x %s\n", (uintptr_t)DEVICE_PROJECT, DEVICE_PROJECT);
     // константы      — адрес и значение строк паспорта из device.h
-       printf("%-13s 0x%08x %s\n", (uintptr_t)DEVICE_BOARD, DEVICE_BOARD);
+       printf("DEVICE_BOARD    0x%08x %s\n", (uintptr_t)DEVICE_BOARD, DEVICE_BOARD);
     // data_variable  — адрес и значение, секция .data
-       printf("%-13s 0x%08x %u\n", (uintptr_t)data_variable, data_variable);
+       printf("data_variable   0x%08x %u\n", (uintptr_t)&data_variable, data_variable);
     // bss_variable   — адрес и значение, секция .bss
-       printf("%-13s 0x%08x %u\n", (uintptr_t)bss_variable, bss_variable);
+       printf("bss_variable    0x%08x %u\n", (uintptr_t)&bss_variable, bss_variable);
     // stack_variable — адрес и значение
        uint32_t stack_variable = 1946;
        uint32_t *heap_variable = malloc(sizeof(uint32_t));
@@ -144,9 +144,9 @@ void fw_info(void)
               *heap_variable = 1951;
        }
        
-       printf("%-13s 0x%08x %u\n", (uintptr_t)stack_variable, stack_variable);
+       printf("stack_variable  0x%08x %u\n", (uintptr_t)&stack_variable, stack_variable);
     // heap_variable  — адрес и значение
-       printf("%-13s 0x%08x %u\n", (uintptr_t)heap_variable, heap_variable);
+       printf("heap_variable   0x%08x %u\n", (uintptr_t)heap_variable, *heap_variable);
     // возвращаем блок кучи
        free(heap_variable);
 
