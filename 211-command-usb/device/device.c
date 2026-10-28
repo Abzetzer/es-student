@@ -31,8 +31,7 @@ void device_info(void)
 void dev_info(void)
 {
     printf("struct          address     size offset value\n");
-    printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
-           "device card",
+    printf("device card     0x%08x %5u\n",
            &device_card,
            sizeof(device_card));
     printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
