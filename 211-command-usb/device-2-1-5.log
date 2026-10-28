@@ -3,14 +3,14 @@
 устройство: 2e8a:000a
 серийный номер: E663589863531A2C
 порт: COM3
-начало: 2026-10-29T00:14:52
+начало: 2026-10-29T00:32:55
    0.001 --> dev_info
-   0.180 <-- dev_info
-   0.181 <-- dbg read_line:125 got dev_info
-   0.181 <-- struct          address     size offset value
-   0.182 <-- device card     0x20000f40    24
-   0.183 <-- - revision      0x20000f40     1      0 0x00000002
-   0.183 <-- - version       0x20000f44     4      4 0x00010000
-   0.184 <-- - name          0x20000f48    13      8 0x20000f48
-   0.695 <-- fields 18, sizeof 24, padding 6
+   0.176 <-- dev_info
+   0.176 <-- dbg read_line:125 got dev_info
+   0.177 <-- struct          address     size offset value
+   0.178 <-- device_card     0x20000f40    24
+   0.178 <-- - revision      0x20000f40     1      0 0x00000002
+   0.179 <-- - version       0x20000f44     4      4 0x00010000
+   0.180 <-- - name          0x20000f48    13      8 0x20000f48
+   0.691 <-- fields 18, sizeof 24, padding 6
 итог: отправлено команд 1, принято строк 8
