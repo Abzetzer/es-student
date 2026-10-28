@@ -165,13 +165,13 @@ void boot_info(void)
     // указатель на регистр GPIO_IN и разряд вывода светодиода
 
     // vector table   — адрес таблицы
-       printf("  vector table   0x%08x\n",(uint32_t)VECTOR_TABLE);
+       printf("vector table   0x%08x\n",(uint32_t)VECTOR_TABLE);
     //   stack top    — первое слово
        printf("  stack top    0x%08x\n", stack_top);
     //   reset        — второе слово
        printf("  reset        0x%08x\n", reset_handler);
     //   reset (even) — оно же со сброшенным признаком Thumb
-       printf("  reset(even) 0x%08x\n", (reset_handler & ~1u));
+       printf("  reset (even) 0x%08x\n", (reset_handler & ~1u));
     // gpio in        — адрес регистра
        volatile uint32_t *gpio_in = (uint32_t*)0xd0000004;
        uint32_t level = (*gpio_in >> led_pin()) & 1u;
