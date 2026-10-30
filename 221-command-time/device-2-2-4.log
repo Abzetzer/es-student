@@ -3,34 +3,34 @@
 устройство: 2e8a:000a
 серийный номер: E663589863531A2C
 порт: COM3
-начало: 2026-10-31T02:25:06
-   0.000 --> main_time_reset
+начало: 2026-10-31T02:38:32
+   0.001 --> main_time_reset
    0.001 <-- main_time_reset
    0.002 <-- dbg read_line:184 got main_time_reset
    0.002 <-- max reset
-   2.034 --> main_time_exec
-   2.035 <-- main_time_exec
-   2.035 <-- dbg read_line:184 got main_time_exec
-   2.036 <-- iteration avg 2.50 us, max 0 us
-   3.057 --> calc_pi
-   3.057 <-- calc_pi
-   3.058 <-- dbg read_line:184 got calc_pi
-   7.764 <-- pi: 3.14159165
-   7.765 <-- time: 4706 ms
-   9.229 --> main_time_exec
-   9.230 <-- main_time_exec
-   9.230 <-- dbg read_line:184 got main_time_exec
-   9.231 <-- iteration avg 5.58 us, max 0 us
-  14.294 --> main_time_exec
-  14.295 <-- main_time_exec
-  14.295 <-- dbg read_line:184 got main_time_exec
-  14.295 <-- iteration avg 2.64 us, max 0 us
-  15.330 --> main_time_reset
-  15.331 <-- main_time_reset
-  15.331 <-- dbg read_line:184 got main_time_reset
-  15.332 <-- max reset
-  16.345 --> main_time_exec
-  16.345 <-- main_time_exec
-  16.346 <-- dbg read_line:184 got main_time_exec
-  16.347 <-- iteration avg 2.59 us, max 0 us
+   2.037 --> main_time_exec
+   2.038 <-- main_time_exec
+   2.039 <-- dbg read_line:184 got main_time_exec
+   2.039 <-- iteration avg 2.50 us, max 569 us
+   3.074 --> calc_pi
+   3.075 <-- calc_pi
+   3.075 <-- dbg read_line:184 got calc_pi
+   7.782 <-- pi: 3.14159165
+   7.783 <-- time: 4706 ms
+   9.217 --> main_time_exec
+   9.218 <-- main_time_exec
+   9.219 <-- dbg read_line:184 got main_time_exec
+   9.219 <-- iteration avg 5.65 us, max 4707118 us
+  14.293 --> main_time_exec
+  14.293 <-- main_time_exec
+  14.294 <-- dbg read_line:184 got main_time_exec
+  14.294 <-- iteration avg 2.64 us, max 4707118 us
+  15.305 --> main_time_reset
+  15.306 <-- main_time_reset
+  15.306 <-- dbg read_line:184 got main_time_reset
+  15.307 <-- max reset
+  16.340 --> main_time_exec
+  16.340 <-- main_time_exec
+  16.341 <-- dbg read_line:184 got main_time_exec
+  16.342 <-- iteration avg 2.59 us, max 301 us
 итог: отправлено команд 7, принято строк 22

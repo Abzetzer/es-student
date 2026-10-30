@@ -37,7 +37,7 @@ float profiling_avg_us(void)
 
 uint32_t profiling_max_us(void)
 {
-    max_us;
+    return(max_us);
 }
 
 void profiling_reset_max(void)
