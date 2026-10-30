@@ -123,6 +123,16 @@ void cmd_main_time_reset(void)
     main_time_reset();
 }
 
+void cmd_clk_sys_low(void)
+{
+    clk_sys_low();
+}
+
+void cmd_clk_sys_default(void)
+{
+    clk_sys_default();
+}
+
 struct command_t
 {
     const char *name;
@@ -142,7 +152,9 @@ const struct command_t commands[] =
     { "uptime", cmd_uptime },
     { "calc_pi", cmd_calc_pi },
     { "main_time_exec", cmd_main_time_exec },
-    { "main_time_reset", cmd_main_time_reset }
+    { "main_time_reset", cmd_main_time_reset },
+    { "clk_sys_low", cmd_clk_sys_low },
+    { "clk_sys_default", cmd_clk_sys_default }
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
