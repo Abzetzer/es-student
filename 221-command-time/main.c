@@ -11,6 +11,7 @@
 #include "memory.h"
 #include "command.h"
 #include "clock.h"
+#include "profiling.h"
 
 // прикидка: за член ряда 4 операции с double, 175 + 110 + 190 + 110 = 585 тактов;
 // 1 000 000 членов по 585 тактов при 125 МГц — около 4,7 с
@@ -112,6 +113,16 @@ void cmd_calc_pi(void)
     printf("time: %llu ms\n", spent_us / 1000);
 }
 
+void cmd_main_time_exec(void)
+{
+    main_time_exec();
+}
+
+void cmd_main_time_reset(void)
+{
+    main_time_reset();
+}
+
 struct command_t
 {
     const char *name;
@@ -129,7 +140,9 @@ const struct command_t commands[] =
     { "boot_info", cmd_boot_info},
     { "clk_info", cmd_clk_info },
     { "uptime", cmd_uptime },
-    { "calc_pi", cmd_calc_pi }
+    { "calc_pi", cmd_calc_pi },
+    { "main_time_exec", cmd_main_time_exec },
+    { "main_time_reset", cmd_main_time_reset }
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
@@ -184,16 +197,19 @@ void read_line(void)
     }
 }
 
+
 int main()
 {
     led_init();
     stdio_init_all();
+    profiling_init();
 
     bool led = false;
     bool previous = false;
 
     while (1)
     {
+        profiling_iteration();
         blink();
         read_line();
     }
