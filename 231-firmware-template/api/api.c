@@ -8,6 +8,7 @@
 #include "hardware/clocks.h"
 #include "log.h"
 #include "led-task.h"
+#include "button-task.h"
 #include <errno.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -127,6 +128,11 @@ void cmd_led_blink(const command_t *command)
     print_led_state();
 }
 
+void cmd_button(const command_t *command)
+{
+    printf("button: %s, presses %u\n", button_task_is_pressed() ? "pressed" : "released", button_task_get_press_count());
+}
+
 const api_command_t commands[] = {
     {"help", "list of commands", cmd_help},
     {"info", "device passport", cmd_info},
@@ -137,7 +143,8 @@ const api_command_t commands[] = {
     {"led_enable", "enable led", cmd_led_enable},
     {"led_disable", "disable led", cmd_led_disable},
     {"led_blink", "blink led", cmd_led_blink},
-    {"led_period", "set led period in ms: led_period <period_ms>", cmd_led_period}
+    {"led_period", "set led period in ms: led_period <period_ms>", cmd_led_period},
+    {"button", "show button state and press count", cmd_button}
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
