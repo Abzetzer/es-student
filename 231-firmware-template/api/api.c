@@ -7,6 +7,7 @@
 #include "device.h"
 #include "hardware/clocks.h"
 #include "log.h"
+#include "led-task.h"
 #include <errno.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -76,7 +77,8 @@ void cmd_calc_pi(const command_t *command) {
 }
 
 
-void cmd_info(const command_t *command) {
+void cmd_info(const command_t *command) 
+{
   device_info();
 }
 
@@ -88,6 +90,43 @@ void cmd_main_time_exec(const command_t *command) { main_time_exec(); }
 
 void cmd_help(const command_t *command);
 
+void cmd_led_period(const command_t *command)
+{
+    uint32_t period_ms;
+
+    if (command->argc != 1 || !parse_u32(command->argv[0], &period_ms))
+    {
+        printf("error: usage led_period <period_ms>\n");
+        return;
+    }
+
+    // годится ли такой период, решает задача светодиода
+    if (!led_task_set_period_ms(period_ms))
+    {
+        printf("error: period_ms must be greater than 0\n");
+        return;
+    }
+
+    // ответ: состояние и период светодиода
+    print_led_state();
+}
+
+void cmd_led_enable(const command_t *command)
+{
+    led_task_set_state(LED_STATE_ON);
+    print_led_state();
+}
+void cmd_led_disable(const command_t *command)
+{
+    led_task_set_state(LED_STATE_OFF);
+    print_led_state();
+}
+void cmd_led_blink(const command_t *command)
+{
+    led_task_set_state(LED_STATE_BLINK);
+    print_led_state();
+}
+
 const api_command_t commands[] = {
     {"help", "list of commands", cmd_help},
     {"info", "device passport", cmd_info},
@@ -95,6 +134,10 @@ const api_command_t commands[] = {
     {"calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
     {"main_time_reset", "reset maximum iteration", cmd_main_time_reset},
     {"main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec},
+    {"led_enable", "enable led", cmd_led_enable},
+    {"led_disable", "disable led", cmd_led_disable},
+    {"led_blink", "blink led", cmd_led_blink},
+    {"led_period", "set led period in ms: led_period <period_ms>", cmd_led_period}
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
