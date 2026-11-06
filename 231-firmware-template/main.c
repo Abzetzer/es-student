@@ -6,7 +6,6 @@
 #include "hardware/clocks.h"
 
 #include "log.h"
-#include "device.h"
 #include "profiling.h"
 #include "stdio-text-protocol.h"
 #include "api.h"

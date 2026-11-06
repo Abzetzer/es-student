@@ -4,6 +4,14 @@
 #include "button-task.h"
 #include "led-task.h"
 
+typedef enum {
+  RELEASED,
+  PREPRESSED,
+  PRESSED,
+  PRERELEASED,
+} button_state_t;
+
+
 static button_state_t button_state = RELEASED;
 static uint64_t last_toggle_us = 0;
 uint32_t button_press_count = 0;
