@@ -41,21 +41,21 @@ void button_task_handle(void)
             last_toggle_us = now_us;
         }
     break;
-    case PREPRESSED:
-        if (now_us - last_toggle_us <= DEBOUNCE_US)
+case PREPRESSED:
+      if (now_us - last_toggle_us >= DEBOUNCE_US) 
+      {
+        if (button_input == 0) 
         {
-            button_state = RELEASED;
-        }
-        else
+          button_press_count++;
+          button_state = PRESSED;
+          led_task_next_state();
+        } 
+        else 
         {
-            if (button_input == 0)
-            {
-                button_state = PRESSED;
-                button_press_count ++;
-                led_task_next_state();
-            }
+          button_state = RELEASED;
         }
-    break;
+      }
+      break;
     case PRESSED:
         if (button_input == 1)
         {
