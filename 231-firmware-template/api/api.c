@@ -9,6 +9,7 @@
 #include "log.h"
 #include "led-task.h"
 #include "button-task.h"
+#include "pi-task.h"
 #include <errno.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -50,33 +51,50 @@ typedef struct
 
 // прикидка: за член ряда 4 операции с double, 175 + 110 + 190 + 110 = 585
 // тактов; 1 000 000 членов по 585 тактов при 125 МГц — около 4,7 с
-const uint CALC_PI_TERMS = 1000000;
-
-double calc_pi(uint terms) {
-  double sum = 0.0;
-  double sign = 1.0;
-
-  for (int k = 0; k < terms; k++) {
-    // Прибавить очередной член ряда: ±1 / (2k + 1)
-    sum += sign / (2.0 * k + 1.0);
-    sign = -sign;
-  }
-
-  // Сумма ряда равна π/4
-  return 4.0 * sum;
-}
-
 volatile double pi_result;
 
-void cmd_calc_pi(const command_t *command) {
-  uint64_t start_us = time_us_64();
-  pi_result = calc_pi(CALC_PI_TERMS);
-  uint64_t spent_us = time_us_64() - start_us;
+void cmd_pi_start(const command_t *command)
+{
+    uint32_t terms = 1000000;
+    if (command->argc > 0)
+    {
+        parse_u32(command->argv[0], &terms);
+    }
 
-  printf("pi: %.8f\n", pi_result);
-  printf("time: %llu ms\n", spent_us / 1000);
+    if (terms <= 0)
+    {
+        printf("error: usage calc_pi [terms]\n");
+        return;
+    }
+
+    if (pi_task_start(terms))
+    {
+        printf("pi: started, %u terms\n", (unsigned int)terms);
+    }
+    else
+    {
+        printf("error: pi is busy\n");
+    }
 }
 
+void cmd_pi(const command_t *command)
+{
+    pi_task_result_t result = pi_task_get_result();
+    switch (result.state)
+    {
+    case PI_STATE_NOT_STARTED:
+        printf("pi: not_started\n");
+        break;
+
+    case PI_STATE_PROCESS:
+        printf("pi: runing\n");
+        break;
+
+    case PI_STATE_FINISH:
+        printf("pi: %.8f in %llu ms\n", result.pi, result.time / 1000);
+        break;
+    }
+}
 
 void cmd_info(const command_t *command) 
 {
@@ -137,14 +155,15 @@ const api_command_t commands[] = {
     {"help", "list of commands", cmd_help},
     {"info", "device passport", cmd_info},
     {"uptime", "time since reset", cmd_uptime},
-    {"calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
     {"main_time_reset", "reset maximum iteration", cmd_main_time_reset},
     {"main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec},
     {"led_enable", "enable led", cmd_led_enable},
     {"led_disable", "disable led", cmd_led_disable},
     {"led_blink", "blink led", cmd_led_blink},
     {"led_period", "set led period in ms: led_period <period_ms>", cmd_led_period},
-    {"button", "show button state and press count", cmd_button}
+    {"button", "show button state and press count", cmd_button},
+    {"pi_start", "start calculating pi number", cmd_pi_start},
+    {"pi", "result or current status", cmd_pi}
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
