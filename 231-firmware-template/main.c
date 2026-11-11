@@ -1,18 +1,14 @@
-#include <stdio.h>
-#include <string.h>
-
-#include "pico/stdlib.h"
-#include "hardware/gpio.h"
-#include "hardware/clocks.h"
-
 #include "log.h"
-#include "profiling.h"
 #include "device.h"
-#include "stdio-text-protocol.h"
-#include "api.h"
 #include "led-task.h"
 #include "button-task.h"
 #include "pi-task.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "profiling.h"
+#include "stdio-text-protocol.h"
+#include "api.h"
 
 typedef enum
 {
@@ -29,6 +25,12 @@ int main()
     button_task_init();
     stdio_text_protocol_init();
 
+    profiling_stopwatch_init(STOPWATCH_LOOP, "loop");
+    profiling_stopwatch_init(STOPWATCH_COMMAND, "command");
+    profiling_stopwatch_init(STOPWATCH_LED, "led");
+    profiling_stopwatch_init(STOPWATCH_BUTTON, "button");
+    profiling_stopwatch_init(STOPWATCH_PI, "pi");
+
     LOG_INF("%s %s\n", DEVICE_NAME, FIRMWARE_VERSION);
 
     while (1)
@@ -40,12 +42,6 @@ int main()
         profiling_start(STOPWATCH_BUTTON);
         button_task_handle();
         profiling_stop(STOPWATCH_BUTTON);
-
-        profiling_stopwatch_init(STOPWATCH_LOOP, "loop");
-        profiling_stopwatch_init(STOPWATCH_COMMAND, "command");
-        profiling_stopwatch_init(STOPWATCH_LED, "led");
-        profiling_stopwatch_init(STOPWATCH_BUTTON, "button");
-        profiling_stopwatch_init(STOPWATCH_PI, "pi");
 
         profiling_start(STOPWATCH_LOOP);
 
