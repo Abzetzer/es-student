@@ -6,6 +6,7 @@
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sysinfo.h"
 
+struct info_t device_card = {.version = 0x00010000, .revision = 2, .name = DEVICE_NAME};
 
 void device_info(void)
     {
@@ -25,3 +26,52 @@ void device_info(void)
     printf("chip: manufacturer 0x%03x, part 0x%04x, revision %u\n", manufacturer, part, revision);
     printf("pico-sdk: %s\n", PICO_SDK_VERSION_STRING);
     }
+
+void device_get_info(device_info_t *info)
+{
+       char board_id[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
+       pico_get_unique_board_id_string(board_id, sizeof(board_id));
+
+       volatile uint32_t *chip_id = (uint32_t *)(SYSINFO_BASE + SYSINFO_CHIP_ID_OFFSET);
+       uint32_t id = *chip_id;
+
+       info->project = DEVICE_PROJECT;
+       info->repo = DEVICE_REPO;
+       info->board = DEVICE_BOARD;
+       info->serial = board_id;
+       info->chip_manufacturer = (id & SYSINFO_CHIP_ID_MANUFACTURER_BITS) >> SYSINFO_CHIP_ID_MANUFACTURER_LSB;
+       info->chip_part = (id & SYSINFO_CHIP_ID_PART_BITS) >> SYSINFO_CHIP_ID_PART_LSB;
+       info->chip_revision = (id & SYSINFO_CHIP_ID_REVISION_BITS) >> SYSINFO_CHIP_ID_REVISION_LSB;
+       info->pico_sdk = PICO_SDK_VERSION_STRING;
+}
+
+void dev_info(void)
+{
+    printf("%-15s %-10s %-5s %-6s %s\n",
+            "struct", "address", "size", "offset", "value");
+    printf("%-15s 0x%08x %5u\n",
+            "device_card",
+            (unsigned int)&device_card,
+            sizeof(device_card));
+    printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
+            "version",
+            (unsigned int)&device_card.version,
+            sizeof(device_card.version),
+            offsetof(struct info_t, version),
+            (unsigned int)device_card.version);
+    printf("- %-13s 0x%08x %5u %6u %s\n",
+            "name",
+            (unsigned int)&device_card.name,
+            sizeof(device_card.name),
+            offsetof(struct info_t, name),
+            device_card.name);
+    printf("- %-13s 0x%08x %5u %6u %u\n",
+            "revision",
+            (unsigned int)&device_card.revision,
+            sizeof(device_card.revision),
+            offsetof(struct info_t, revision),
+            device_card.revision);
+
+    unsigned fields = sizeof(device_card.version) + sizeof(device_card.name) + sizeof(device_card.revision);
+    printf("fields %u, sizeof %u, padding %u\n", fields, sizeof(device_card), sizeof(device_card) - fields);
+}

@@ -98,14 +98,22 @@ void cmd_pi(const command_t *command)
 
 void cmd_info(const command_t *command) 
 {
-  device_info();
+    device_info_t info;
+    device_get_info(&info);
+
+    printf("project: %s\n", info.project);
+    printf("repo: %s\n", info.repo);
+    printf("board: %s\n", info.board);
+    printf("serial: %s\n", info.serial);
+    printf(
+        "chip: manufacturer 0x%03x, part 0x%04x, revision %u\n",
+        (unsigned int)info.chip_manufacturer,
+        (unsigned int)info.chip_part,
+        (unsigned int)info.chip_revision);
+    printf("pico-sdk: %s\n", info.pico_sdk);
 }
 
 void cmd_uptime(const command_t *command) { printf("uptime: %llu ms\n", time_us_64() / 1000); }
-
-void cmd_main_time_reset(const command_t *command) { main_time_reset(); }
-
-void cmd_main_time_exec(const command_t *command) { main_time_exec(); }
 
 void cmd_help(const command_t *command);
 
@@ -151,19 +159,40 @@ void cmd_button(const command_t *command)
     printf("button: %s, presses %u\n", button_task_is_pressed() ? "pressed" : "released", button_task_get_press_count());
 }
 
+void cmd_profiling(const command_t *command)
+{
+
+    for (uint32_t id = 0; id < STOPWATCH_COUNT; ++id)
+    {
+        profiling_result_t result;
+        profiling_get(id, &result);
+        printf(
+            "%-18s\tcount %u\tmean %f us\tmax %u us\n",
+            result.name,
+            (unsigned int)result.n,
+            result.avg_us,
+            (unsigned int)result.max_us);
+    }
+}
+
+void cmd_profiling_reset(const command_t *command)
+{
+    profiling_reset();
+}
+
 const api_command_t commands[] = {
     {"help", "list of commands", cmd_help},
     {"info", "device passport", cmd_info},
     {"uptime", "time since reset", cmd_uptime},
-    {"main_time_reset", "reset maximum iteration", cmd_main_time_reset},
-    {"main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec},
     {"led_enable", "enable led", cmd_led_enable},
     {"led_disable", "disable led", cmd_led_disable},
     {"led_blink", "blink led", cmd_led_blink},
     {"led_period", "set led period in ms: led_period <period_ms>", cmd_led_period},
     {"button", "show button state and press count", cmd_button},
     {"pi_start", "start calculating pi number", cmd_pi_start},
-    {"pi", "result or current status", cmd_pi}
+    {"pi", "result or current status", cmd_pi},
+    {"profiling", "profiling", cmd_profiling},
+    {"profiling_reset", "profiling reset", cmd_profiling_reset},
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);

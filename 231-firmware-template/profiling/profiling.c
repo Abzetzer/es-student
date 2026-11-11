@@ -1,14 +1,18 @@
 #include "profiling.h"
 #include "pico/stdlib.h"
-#include <stdio.h>
-
-#define AVG_SHIFT 19
-#define FRACTION_SHIFT 8
 
 static uint64_t avg_sum = 0;
 
 static uint32_t previous_us = 0;
 static uint32_t max_us = 0;
+
+// итерация около 2 мкс, за секунду их около 500 000;
+// ближайшая степень двойки 2^19 = 524 288, среднее помнит около секунды
+#define AVG_SHIFT 19
+// замер в 1/256 долях микросекунды, чтобы среднее не теряло дробную часть
+#define FRACTION_SHIFT 8
+
+static profiling_result_t profiling_result[STOPWATCH_COUNT];
 
 void profiling_init(void)
 {
@@ -26,7 +30,6 @@ void profiling_iteration(void)
         max_us = iteration_us;
     }
 
-    // обновление среднего — шаг 3
     avg_sum = avg_sum - (avg_sum >> AVG_SHIFT) + ((uint64_t)iteration_us << FRACTION_SHIFT);
 }
 
@@ -35,23 +38,74 @@ float profiling_avg_us(void)
     return (float)(avg_sum >> AVG_SHIFT) / (1 << FRACTION_SHIFT);
 }
 
-uint32_t profiling_max_us(void)
-{
-    return(max_us);
-}
-
 void profiling_reset_max(void)
 {
     max_us = 0;
 }
 
-void main_time_exec(void)
+uint32_t profiling_max_us(void)
 {
-    printf("iteration avg %.2f us, max %u us\n", profiling_avg_us(), (unsigned)profiling_max_us());
+    return max_us;
 }
 
-void main_time_reset(void)
+void profiling_stopwatch_init(uint32_t id, const char *name)
 {
-    profiling_reset_max();
-    printf("max reset\n");
+    if (id >= STOPWATCH_COUNT)
+    {
+        return;
+    }
+    profiling_result[id].name = (char *)name;
+    profiling_result[id].n = 0;
+    profiling_result[id].sum = 0;
+    profiling_result[id].max_us = 0;
+    profiling_result[id].start_us = time_us_32();
+}
+
+void profiling_start(uint32_t id)
+{
+    if (id >= STOPWATCH_COUNT)
+    {
+        return;
+    }
+    profiling_result[id].start_us = time_us_32();
+}
+
+void profiling_stop(uint32_t id)
+{
+    if (id >= STOPWATCH_COUNT)
+    {
+        return;
+    }
+    uint32_t stop_us = time_us_32();
+    uint32_t time_us = stop_us - profiling_result[id].start_us;
+    profiling_result[id].sum += time_us;
+    profiling_result[id].n++;
+    profiling_result[id].avg_us = (double)profiling_result[id].sum / profiling_result[id].n;
+    if (time_us > profiling_result[id].max_us)
+    {
+        profiling_result[id].max_us = time_us;
+    }
+}
+
+// false — секундомер с таким номером не заведён
+bool profiling_get(uint32_t id, profiling_result_t *result)
+{
+    if (id >= STOPWATCH_COUNT)
+    {
+        return false;
+    }
+    *result = profiling_result[id];
+    return true;
+}
+
+void profiling_reset(void)
+{
+    for (uint32_t id = 0; id < STOPWATCH_COUNT; id++)
+    {
+        profiling_result[id].n = 0;
+        profiling_result[id].sum = 0;
+        profiling_result[id].start_us = 0;
+        profiling_result[id].avg_us = 0;
+        profiling_result[id].max_us = 0;
+    }
 }
