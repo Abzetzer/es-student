@@ -1,15 +1,6 @@
 #pragma once
 
-#include "pico/stdlib.h"
-
-void led_init(void);
-void led_set(bool on);
-void led_toggle(void);
-bool led_is_on(void);
-
 #include <stdio.h>
-
-#define DEVICE_NAME "es-led-module"
 
 #define LOG_LEVEL_ERR 1
 #define LOG_LEVEL_INF 2
