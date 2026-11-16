@@ -6,7 +6,7 @@
 #include "profiling/profiling.h"
 #include "device/device.h"
 #include "hardware/clocks.h"
-#include "logging/logging.h"
+#include "logging/log.h"
 #include "led-task.h"
 #include "button-task.h"
 #include "pi-task.h"

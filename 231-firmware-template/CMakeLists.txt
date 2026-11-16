@@ -11,7 +11,7 @@ pico_sdk_init()
 
 add_compile_options(-Wall)
 # libs лежит вне папки проекта: второй аргумент задаёт каталог сборки
-add_subdirectory(libs ${CMAKE_BINARY_DIR}/libs)
+add_subdirectory(../libs ${CMAKE_BINARY_DIR}/libs)
 
 add_executable(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/main.c
