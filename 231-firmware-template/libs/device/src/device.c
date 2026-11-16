@@ -1,12 +1,9 @@
-#include "device.h"
-#include <stddef.h>
+#include "device/device.h"
 #include <stdio.h>
+#include <stddef.h>
 #include "pico/unique_id.h"
-#include "pico/version.h"
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sysinfo.h"
-
-struct info_t device_card = {.version = 0x00010000, .revision = 2, .name = DEVICE_NAME};
 
 void device_get_info(device_info_t *info)
 {
@@ -16,9 +13,6 @@ void device_get_info(device_info_t *info)
        volatile uint32_t *chip_id = (uint32_t *)(SYSINFO_BASE + SYSINFO_CHIP_ID_OFFSET);
        uint32_t id = *chip_id;
 
-       info->project = DEVICE_PROJECT;
-       info->repo = DEVICE_REPO;
-       info->board = DEVICE_BOARD;
        info->serial = board_id;
        info->chip_manufacturer = (id & SYSINFO_CHIP_ID_MANUFACTURER_BITS) >> SYSINFO_CHIP_ID_MANUFACTURER_LSB;
        info->chip_part = (id & SYSINFO_CHIP_ID_PART_BITS) >> SYSINFO_CHIP_ID_PART_LSB;

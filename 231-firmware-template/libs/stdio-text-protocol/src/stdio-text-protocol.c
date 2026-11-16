@@ -1,7 +1,6 @@
-#include "stdio-text-protocol.h"
+#include "stdio-text-protocol/stdio-text-protocol.h"
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "log.h"
 
 static char line_buffer[STDIO_TEXT_PROTOCOL_LINE_SIZE];
 static int line_buffer_length = 0;
