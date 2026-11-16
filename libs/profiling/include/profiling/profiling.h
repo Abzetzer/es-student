@@ -2,7 +2,6 @@
 
 #include "stdint.h"
 #include "stdbool.h"
-#include "pico/types.h"
 
 // по умолчанию профилирование включено
 #ifndef PROFILING_ENABLED

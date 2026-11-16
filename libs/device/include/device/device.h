@@ -4,7 +4,7 @@
 #define DEVICE_BOARD "unknown"
 #endif
 
-#include "stdint.h"
+#include <stdint.h>
 
 void device_info(void);
 void boot_info(void);

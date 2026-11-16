@@ -1,5 +1,6 @@
 #include "profiling/profiling.h"
 #include "pico/stdlib.h"
+#include "pico/time.h"
 
 static uint64_t avg_sum = 0;
 
