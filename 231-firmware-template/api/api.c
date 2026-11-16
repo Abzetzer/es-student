@@ -7,6 +7,7 @@
 #include "device/device.h"
 #include "hardware/clocks.h"
 #include "logging/log.h"
+#include "systime/systime.h"
 #include "led-task.h"
 #include "button-task.h"
 #include "pi-task.h"
@@ -113,7 +114,7 @@ void cmd_info(const command_t *command)
     printf("pico-sdk: %s\n", info.pico_sdk);
 }
 
-void cmd_uptime(const command_t *command) { printf("uptime: %llu ms\n", time_us_64() / 1000); }
+void cmd_uptime(const command_t *command) { printf("uptime: %llu ms\n", systime_ms()); }
 
 void cmd_help(const command_t *command);
 
@@ -156,23 +157,29 @@ void cmd_led_blink(const command_t *command)
 
 void cmd_button(const command_t *command)
 {
-    printf("button: %s, presses %u\n", button_task_is_pressed() ? "pressed" : "released", button_task_get_press_count());
+    printf(
+        "button: %s, presses %u\n",
+        button_task_is_pressed() ? "pressed" : "released",
+        (unsigned int)button_task_get_press_count());
 }
 
 void cmd_profiling(const command_t *command)
 {
-
-    for (uint32_t id = 0; id < STOPWATCH_COUNT; ++id)
-    {
-        profiling_result_t result;
-        profiling_get(id, &result);
-        printf(
-            "%-18s\tcount %u\tmean %f us\tmax %u us\n",
-            result.name,
-            (unsigned int)result.n,
-            result.avg_us,
-            (unsigned int)result.max_us);
-    }
+    #if PROFILING_ENABLED
+        for (uint32_t id = 0; id < STOPWATCH_COUNT; ++id)
+        {
+            profiling_result_t result;
+            profiling_get(id, &result);
+            printf(
+                "%-18s\tcount %u\tmean %f us\tmax %u us\n",
+                result.name,
+                (unsigned int)result.n,
+                result.avg_us,
+                (unsigned int)result.max_us);
+        }
+    #else
+    printf("profiling is disabled in this build\n");
+    #endif
 }
 
 void cmd_profiling_reset(const command_t *command)

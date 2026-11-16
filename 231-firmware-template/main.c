@@ -35,10 +35,6 @@ int main()
 
     while (1)
     {
-        profiling_start(STOPWATCH_LED);
-        led_task_handle();
-        profiling_stop(STOPWATCH_LED);
-
         profiling_start(STOPWATCH_BUTTON);
         button_task_handle();
         profiling_stop(STOPWATCH_BUTTON);

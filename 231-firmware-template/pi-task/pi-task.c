@@ -1,4 +1,5 @@
 #include "pi-task.h"
+#include "systime/systime.h"
 #include "pico/time.h"
 #include <stdio.h>
 
@@ -48,7 +49,7 @@ if (pi_state == PI_STATE_PROCESS)
         if (pi_k == pi_terms)
         {
             pi = 4.0 * pi_process_sum;
-            pi_time_finish = time_us_64();
+            pi_time_finish = systime_us();
             pi_state = PI_STATE_FINISH;
         }
     }
@@ -66,7 +67,7 @@ bool pi_task_start(uint32_t terms)
     pi = 0.0;
     pi_process_sum = 0.0;
     pi_process_sign = 1.0;
-    pi_time_start = time_us_64();
+    pi_time_start = systime_us();
     return true;
 }
 

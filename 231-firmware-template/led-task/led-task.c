@@ -1,4 +1,5 @@
 #include "led-task.h"
+#include "systime/systime.h"
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include <stdio.h>
@@ -10,25 +11,6 @@ uint32_t led_period_ms = 1000;
 led_state_t led_state = LED_STATE_OFF;
 const uint LED_PIN = 25;
 uint64_t last_toggle_us = 0;
-
-bool period_elapsed(uint64_t *last_us, uint64_t period_us)
-{
-    uint64_t now_us = time_us_64();
-
-    if (now_us - *last_us < period_us) {
-        return false;
-    }
-
-    // Следующее срабатывание отсчитывается от прошлого, а не от «сейчас»
-    *last_us += period_us;
-
-    // Отстали больше чем на период: не догонять, а начать отсчёт заново
-    if (now_us - *last_us >= period_us) {
-        *last_us = now_us;
-    }
-
-    return true;
-}
 
 // Вспомогательная функция: из других файлов её не вызвать
 static void led_set(bool on)
@@ -87,21 +69,6 @@ void led_task_set_state(led_state_t state)
     case LED_STATE_BLINK:
         // Первое переключение — на ближайшей итерации
         last_toggle_us = 0;
-        break;
-    }
-}
-
-void led_task_handle(void)
-{
-    switch (led_state) {
-    case LED_STATE_OFF:
-    case LED_STATE_ON:
-        // Светодиод установлен при входе в состояние, делать нечего
-        break;
-    case LED_STATE_BLINK:
-        if (period_elapsed(&last_toggle_us, 500000)) {
-            gpio_put(PICO_DEFAULT_LED_PIN, !gpio_get(PICO_DEFAULT_LED_PIN));
-        }
         break;
     }
 }
