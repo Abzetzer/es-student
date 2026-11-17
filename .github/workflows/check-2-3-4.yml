@@ -1,7 +1,7 @@
 name: 2.3.4 Расчёт по шагам
 
 on:
-  push:
+  # push:
     paths:
       - '231-firmware-template/**'
       - 'libs/**'

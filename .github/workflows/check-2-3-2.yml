@@ -1,7 +1,7 @@
 name: 2.3.2 Задача светодиода
 
 on:
-  push:
+  # push:
     paths:
       - '231-firmware-template/**'
       - 'libs/**'

@@ -1,14 +1,15 @@
 #include "logging/log.h"
 #include "device/device.h"
-#include "led-task.h"
-#include "button-task.h"
-#include "pi-task.h"
+#include "led-task/led-task.h"
+#include "button-task/button-task.h"
+#include "pi-task/pi-task.h"
 #include <stdio.h>
 #include <string.h>
 #include "profiling/profiling.h"
 #include "stdio-text-protocol/stdio-text-protocol.h"
-#include "api.h"
+#include "api/api.h"
 #include "firmware.h"
+#include "platform.h"
 
 typedef enum
 {
@@ -20,9 +21,10 @@ typedef enum
 int main()
 {
     profiling_init();
+    platform_init();
     led_task_init();
     pi_task_init();
-    button_task_init();
+    button_task_init(led_task_next_state);
     stdio_text_protocol_init();
 
     profiling_stopwatch_init(STOPWATCH_LOOP, "loop");

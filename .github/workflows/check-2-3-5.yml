@@ -1,7 +1,7 @@
 name: 2.3.5 Данные вместо печати
 
 on:
-  push:
+  # push:
     paths:
       - '231-firmware-template/**'
       - 'libs/**'

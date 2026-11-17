@@ -1,7 +1,7 @@
 name: 2.3.3 Кнопка без ожидания
 
 on:
-  push:
+  # push:
     paths:
       - '231-firmware-template/**'
       - 'libs/**'

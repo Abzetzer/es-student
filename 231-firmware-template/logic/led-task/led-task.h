@@ -4,7 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum {
+typedef enum
+{
     LED_STATE_OFF,
     LED_STATE_ON,
     LED_STATE_BLINK,
@@ -13,12 +14,10 @@ typedef enum {
 void led_task_init(void);
 void led_task_handle(void);
 
-void led_task_next_state(void);
-
 void led_task_set_state(led_state_t state);
+void led_task_next_state(void);
 led_state_t led_task_get_state(void);
 
 // false — период не принят
 bool led_task_set_period_ms(uint32_t period_ms);
 uint32_t led_task_get_period_ms(void);
-void print_led_state(void);
